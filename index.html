@@ -1,0 +1,266 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>RR Snooker</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&display=swap">
+<style>
+/* Layout: one felt-green panel as the opener (name, top-down table, key facts), then two board cards, then contact. */
+:root {
+  --bg: #EEF4E6;
+  --fg: #0F1D16;
+  --muted: #45584D;
+  --card: #FFFFFF;
+  --line: #C3CFC2;
+  --accent: #9C1C1C;
+  --baize: #0D7A4A;
+  --baize-deep: #09603A;
+  --baize-light: #1CAA6B;
+  --c-yellow: #F7C61B;
+  --c-red: #D42A2A;
+  --c-blue: #2F6FDE;
+  --c-pink: #F472A8;
+  --c-green: #19A85B;
+  --ink: #1A1408;
+  --on-baize: #F3F1E6;
+  --on-baize-muted: #E1F1E6;
+  --rail: #5A3922;
+  --pocket: #070C09;
+  --ball-red: #C62828;
+  --ball-yellow: #F2C230;
+  --ball-green: #2FA862;
+  --ball-brown: #7B4A25;
+  --ball-blue: #2C62B8;
+  --ball-pink: #EE90B2;
+  --ball-black: #111412;
+  --ball-white: #F8F6EC;
+  --display: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+  --body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0B120E; --fg: #E6EDE7; --muted: #9DB1A4; --card: #121C16; --line: #243229; --accent: #F0716A;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0B120E; --fg: #E6EDE7; --muted: #9DB1A4; --card: #121C16; --line: #243229; --accent: #F0716A;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 400 16px/1.55 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 32px;
+}
+.wrap { max-width: 1040px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; }
+.eyebrow { font: 600 0.8125rem/1.3 var(--body); letter-spacing: 0.14em; text-transform: uppercase; }
+
+/* Hero */
+.hero { background: radial-gradient(ellipse at 20% 0%, var(--baize-light) 0%, var(--baize) 50%, var(--baize-deep) 100%); color: var(--on-baize); border-radius: 6px; padding: 24px; display: flex; flex-direction: column; gap: 24px; }
+.hero .eyebrow { color: var(--on-baize-muted); }
+.ballrow { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.ballrow span { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid rgba(255, 255, 255, 0.55); box-shadow: inset -4px -4px 0 rgba(0, 0, 0, 0.18), 0 2px 3px rgba(0, 0, 0, 0.35); }
+.hero h1 { font-weight: 800; font-size: clamp(3.4rem, 12vw, 7.5rem); line-height: 0.88; text-transform: uppercase; letter-spacing: 0.01em; margin-top: 8px; }
+.hero .lead { font-size: 1.125rem; max-width: 34em; color: var(--on-baize); margin-top: 14px; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: 4px; font: 600 1rem/1 var(--body); text-decoration: none; cursor: pointer; border: 1.5px solid transparent; transition: transform 120ms ease; }
+.btn:hover { transform: translateY(-1px); }
+.btn:focus-visible { outline: 3px solid var(--ball-yellow); outline-offset: 2px; }
+.btn-solid { background: var(--on-baize); color: var(--baize-deep); }
+.btn-ghost { background: transparent; color: var(--on-baize); border-color: var(--on-baize-muted); }
+.btn-line { background: transparent; color: var(--fg); border-color: var(--fg); }
+.btn-line:focus-visible { outline-color: var(--accent); }
+.btn-yellow { background: var(--c-yellow); color: var(--ink); }
+.btn-red { background: var(--c-red); color: #fff; }
+.btn-blue { background: var(--c-blue); color: #fff; }
+
+.table-svg { display: block; width: 100%; height: auto; max-width: 100%; }
+
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin: 0; }
+.fact { padding: 14px 16px; min-width: 0; border-radius: 6px; background: var(--c-yellow); color: var(--ink); }
+.fact:nth-child(2) { background: var(--c-red); color: #fff; }
+.fact:nth-child(3) { background: var(--c-blue); color: #fff; }
+.fact dt { font: 600 0.8125rem/1.3 var(--body); letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.92; }
+.fact dd { margin: 4px 0 0; font: 700 clamp(1.7rem, 5vw, 2.4rem)/1.05 var(--display); text-transform: uppercase; overflow-wrap: anywhere; }
+
+/* Sections */
+.section-head { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+.section-head .eyebrow { color: var(--accent); }
+.section-head h2 { font-weight: 700; font-size: clamp(2rem, 6vw, 3rem); line-height: 1; text-transform: uppercase; text-decoration: underline 6px var(--u, var(--c-yellow)); text-underline-offset: 7px; text-decoration-skip-ink: none; }
+.boards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.board { background: var(--card); border: 1px solid var(--line); border-top: 8px solid var(--tone); border-radius: 6px; padding: 16px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.board-meta { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.board h3 { font-weight: 700; font-size: 1.75rem; text-transform: uppercase; line-height: 1; }
+.price { font: 700 1.25rem/1 var(--display); background: var(--tone); color: var(--tone-ink); padding: 7px 12px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.03em; }
+
+.visit { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.panel { border-top: 8px solid var(--tone, var(--fg)); padding-top: 14px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.panel .label { font: 600 0.8125rem/1.3 var(--body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.panel .big { font: 700 clamp(1.9rem, 6vw, 2.6rem)/1.05 var(--display); font-variant-numeric: tabular-nums; letter-spacing: 0.02em; overflow-wrap: anywhere; }
+.panel .big.number { user-select: all; color: var(--c-red); }
+.panel p { color: var(--muted); }
+.panel .actions { margin-top: 6px; }
+.status { min-height: 1.4em; font-size: 0.9375rem; color: var(--muted); }
+
+footer { color: var(--muted); font-size: 0.9375rem; border-top: 1px solid var(--line); padding-top: 16px; }
+
+@media (max-width: 480px) {
+  .hero { padding: 18px; }
+  .btn { flex: 1 1 100%; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: none; }
+  .btn:hover { transform: none; }
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="snooker-table" viewBox="0 0 600 300">
+      <rect x="0" y="0" width="600" height="300" rx="14" style="fill:var(--rail)"/>
+      <rect x="16" y="16" width="568" height="268" rx="6" style="fill:var(--baize-deep)"/>
+      <rect x="30" y="30" width="540" height="240" style="fill:var(--baize)"/>
+      <!-- pockets -->
+      <g style="fill:var(--pocket)">
+        <circle cx="30" cy="30" r="16"/>
+        <circle cx="570" cy="30" r="16"/>
+        <circle cx="30" cy="270" r="16"/>
+        <circle cx="570" cy="270" r="16"/>
+        <circle cx="300" cy="27" r="13"/>
+        <circle cx="300" cy="273" r="13"/>
+      </g>
+      <!-- baulk line and D -->
+      <g style="fill:none;stroke:var(--on-baize);stroke-opacity:0.45;stroke-width:1.5">
+        <line x1="140" y1="30" x2="140" y2="270"/>
+        <path d="M140 95 A55 55 0 0 0 140 205"/>
+      </g>
+      <!-- colours on their spots -->
+      <g style="stroke:rgba(0,0,0,0.35);stroke-width:1">
+        <circle cx="140" cy="205" r="8.5" style="fill:var(--ball-yellow)"/>
+        <circle cx="140" cy="95" r="8.5" style="fill:var(--ball-green)"/>
+        <circle cx="140" cy="150" r="8.5" style="fill:var(--ball-brown)"/>
+        <circle cx="300" cy="150" r="8.5" style="fill:var(--ball-blue)"/>
+        <circle cx="410" cy="150" r="8.5" style="fill:var(--ball-pink)"/>
+        <circle cx="540" cy="150" r="8.5" style="fill:var(--ball-black)"/>
+        <!-- cue ball -->
+        <circle cx="96" cy="172" r="8.5" style="fill:var(--ball-white)"/>
+        <!-- 15 reds -->
+        <g style="fill:var(--ball-red)">
+          <circle cx="430" cy="150" r="8.5"/>
+          <circle cx="445.6" cy="141" r="8.5"/><circle cx="445.6" cy="159" r="8.5"/>
+          <circle cx="461.2" cy="132" r="8.5"/><circle cx="461.2" cy="150" r="8.5"/><circle cx="461.2" cy="168" r="8.5"/>
+          <circle cx="476.8" cy="123" r="8.5"/><circle cx="476.8" cy="141" r="8.5"/><circle cx="476.8" cy="159" r="8.5"/><circle cx="476.8" cy="177" r="8.5"/>
+          <circle cx="492.4" cy="114" r="8.5"/><circle cx="492.4" cy="132" r="8.5"/><circle cx="492.4" cy="150" r="8.5"/><circle cx="492.4" cy="168" r="8.5"/><circle cx="492.4" cy="186" r="8.5"/>
+        </g>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header class="hero">
+    <div>
+      <div class="ballrow" aria-hidden="true">
+        <span style="background:var(--c-red)"></span>
+        <span style="background:var(--c-yellow)"></span>
+        <span style="background:var(--c-green)"></span>
+        <span style="background:var(--ball-brown)"></span>
+        <span style="background:var(--c-blue)"></span>
+        <span style="background:var(--c-pink)"></span>
+        <span style="background:var(--ball-black)"></span>
+        <span style="background:var(--ball-white)"></span>
+      </div>
+      <p class="eyebrow">Snooker house · Diktel Bazar, Khotang</p>
+      <h1>RR Snooker</h1>
+      <p class="lead">Two snooker boards at Vaban Gaira, Diktel Bazar. Rs 100 per match.</p>
+      <div class="actions">
+        <a class="btn btn-yellow" href="tel:9862685003">Call 9862685003</a>
+        <a class="btn btn-ghost" href="#find-us">Find us</a>
+      </div>
+    </div>
+
+    <svg class="table-svg" viewBox="0 0 600 300" role="img" aria-label="Top-down view of a snooker table with the balls racked">
+      <use href="#snooker-table"/>
+    </svg>
+
+    <dl class="facts">
+      <div class="fact"><dt>Boards</dt><dd>2 snooker boards</dd></div>
+      <div class="fact"><dt>Price</dt><dd>Rs 100 per match</dd></div>
+      <div class="fact"><dt>Place</dt><dd>Diktel Bazar, Khotang</dd></div>
+    </dl>
+  </header>
+
+  <section aria-labelledby="boards-title">
+    <div class="section-head">
+      <p class="eyebrow">The tables</p>
+      <h2 id="boards-title">Two boards</h2>
+    </div>
+    <div class="boards">
+      <article class="board" style="--tone:var(--c-blue);--tone-ink:#fff">
+        <svg class="table-svg" viewBox="0 0 600 300" role="img" aria-label="Snooker board 1"><use href="#snooker-table"/></svg>
+        <div class="board-meta"><h3>Board 1</h3><span class="price">Rs 100 per match</span></div>
+      </article>
+      <article class="board" style="--tone:var(--c-pink);--tone-ink:var(--ink)">
+        <svg class="table-svg" viewBox="0 0 600 300" role="img" aria-label="Snooker board 2"><use href="#snooker-table"/></svg>
+        <div class="board-meta"><h3>Board 2</h3><span class="price">Rs 100 per match</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="find-us" aria-labelledby="visit-title">
+    <div class="section-head">
+      <p class="eyebrow">Visit</p>
+      <h2 id="visit-title" style="--u:var(--c-pink)">Find RR Snooker</h2>
+    </div>
+    <div class="visit">
+      <div class="panel" style="--tone:var(--c-green)">
+        <p class="label">Location</p>
+        <p class="big">Vaban Gaira, Diktel Bazar</p>
+        <p>Khotang</p>
+        <div class="actions">
+          <a class="btn btn-blue" href="https://www.google.com/maps/search/?api=1&amp;query=Diktel+Bazar+Khotang" target="_blank" rel="noopener">Open in Maps</a>
+        </div>
+      </div>
+      <div class="panel" style="--tone:var(--c-red)">
+        <p class="label">Phone</p>
+        <p class="big number" id="phone">9862685003</p>
+        <div class="actions">
+          <a class="btn btn-red" href="tel:9862685003">Call</a>
+          <button class="btn btn-line" type="button" id="copy-btn">Copy number</button>
+        </div>
+        <p class="status" id="copy-status" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <footer>RR Snooker · Vaban Gaira, Diktel Bazar, Khotang · 9862685003</footer>
+</div>
+
+<script>
+(function () {
+  var btn = document.getElementById('copy-btn');
+  var status = document.getElementById('copy-status');
+  var phone = document.getElementById('phone');
+  function selectPhone() {
+    var r = document.createRange();
+    r.selectNodeContents(phone);
+    var s = window.getSelection();
+    s.removeAllRanges();
+    s.addRange(r);
+  }
+  btn.addEventListener('click', function () {
+    var done = function () { status.textContent = 'Number copied.'; };
+    var fail = function () { selectPhone(); status.textContent = 'Number selected. Press copy on your device.'; };
+    try {
+      navigator.clipboard.writeText('9862685003').then(done, fail);
+    } catch (e) { fail(); }
+  });
+})();
+</script>
+
+</body></html>
